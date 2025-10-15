@@ -55,24 +55,38 @@ def within_session(now=None):
     return MARKET_START <= t <= MARKET_END
 
 
+# === LINE Messaging API 設定 ===
+LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", "").strip()
+LINE_TO = os.getenv("LINE_TO", "").strip()
+
 def send_line(message: str) -> bool:
-    token = LINE_NOTIFY_TOKEN
-    if not token:
-        print("[WARN] LINE_NOTIFY_TOKEN 未設定，略過推播。")
-        return False
-    try:
-        resp = requests.post(
-            LINE_NOTIFY_API,
-            headers={"Authorization": "Bearer " + token},
-            data={"message": message},
-            timeout=15,
-        )
-        print("[INFO] LINE resp:", resp.status_code)
-        return resp.status_code == 200
-    except Exception as e:
-        print("[ERROR] LINE error:", e)
+    """用 Messaging API 推播訊息"""
+    if not LINE_CHANNEL_ACCESS_TOKEN or not LINE_TO:
+        print("[WARN] LINE Messaging API 環境變數未設定，略過推播。")
         return False
 
+    try:
+        resp = requests.post(
+            "https://api.line.me/v2/bot/message/push",
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {LINE_CHANNEL_ACCESS_TOKEN}",
+            },
+            json={
+                "to": LINE_TO,
+                "messages": [{"type": "text", "text": message}],
+            },
+            timeout=15,
+        )
+        if resp.status_code == 200:
+            print("[INFO] LINE 推播成功。")
+            return True
+        else:
+            print(f"[ERROR] LINE 推播失敗 {resp.status_code}: {resp.text}")
+            return False
+    except Exception as e:
+        print(f"[ERROR] LINE 推播錯誤: {e}")
+        return False
 
 def get_latest_and_prevclose(ticker: str):
     tkr = yf.Ticker(ticker)
