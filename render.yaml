@@ -1,0 +1,20 @@
+services:
+  - type: worker
+    name: us-stockbot
+    env: python
+    autoDeploy: true
+    buildCommand: |
+      pip install yfinance pandas pytz requests
+    startCommand: |
+      python us_stockbot_push.py
+    envVars:
+      - key: LINE_NOTIFY_TOKEN
+        fromSecret: line-notify-token
+
+cronJobs:
+  - name: us-stockbot-scheduler
+    schedule: "*/10 * * * *"   # 每 10 分鐘呼叫一次；程式內已限制台灣時間 21:30–01:00
+    command: python us_stockbot_push.py
+    envVars:
+      - key: LINE_NOTIFY_TOKEN
+        fromSecret: line-notify-token
