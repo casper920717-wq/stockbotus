@@ -56,12 +56,12 @@ def within_session(now=None):
 
 
 # === LINE Messaging API 設定 ===
-LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", "").strip()
+LINE_CHANNEL_TOKEN = os.getenv("LINE_CHANNEL_TOKEN", "").strip()
 LINE_TO = os.getenv("LINE_TO", "").strip()
 
 def send_line(message: str) -> bool:
     """用 Messaging API 推播訊息"""
-    if not LINE_CHANNEL_ACCESS_TOKEN or not LINE_TO:
+    if not LINE_CHANNEL_TOKEN or not LINE_TO:
         print("[WARN] LINE Messaging API 環境變數未設定，略過推播。")
         return False
 
@@ -70,7 +70,7 @@ def send_line(message: str) -> bool:
             "https://api.line.me/v2/bot/message/push",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {LINE_CHANNEL_ACCESS_TOKEN}",
+                "Authorization": f"Bearer {LINE_CHANNEL_TOKEN}",
             },
             json={
                 "to": LINE_TO,
