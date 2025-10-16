@@ -29,7 +29,7 @@ CODES = ["MSFT","NVDA","SATS","TTD","HIMS","PLTR","AVGO","MP","NB","LAC",
 
 TZ_TAIPEI = pytz.timezone("Asia/Taipei")
 MARKET_START = dtime(21, 30, 0)   # 台灣時間
-MARKET_END   = dtime(2, 0, 0)     # 跨日結束
+MARKET_END   = dtime(3, 0, 0)     # 跨日結束
 ALLOW_OUTSIDE_WINDOW = False
 
 LINE_NOTIFY_TOKEN = os.getenv("LINE_NOTIFY_TOKEN", "").strip()
