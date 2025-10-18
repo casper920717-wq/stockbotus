@@ -54,17 +54,6 @@ def within_session(now=None):
         return (t >= MARKET_START) or (t <= MARKET_END)
     return MARKET_START <= t <= MARKET_END
 
-# 👇 在這裡插入美股開盤判斷函式
-TZ_NY = pytz.timezone("America/New_York")
-MARKET_START_US = dtime(9, 30, 0)
-MARKET_END_US   = dtime(16, 0, 0)
-
-def within_us_session(now: datetime | None = None) -> bool:
-    """判斷是否在美股開盤時間（紐約時間 9:30–16:00）"""
-    if now is None:
-        now = datetime.now(TZ_NY)
-    t = now.time()
-    return MARKET_START_US <= t <= MARKET_END_US
 
 
 # === LINE Messaging API 設定 ===
