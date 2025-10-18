@@ -289,6 +289,18 @@ def format_message(all_lines: list, run_dt=None):
         out.append(buf)
     return out
 
+# 週六(5)、週日(6)不運作
+from datetime import datetime
+import pytz
+
+TZ_NY = pytz.timezone("America/New_York")
+
+def main():
+    # 週末（紐約時間）不運作
+    now_us = datetime.now(TZ_NY)
+    if now_us.weekday() >= 5:  # 週六(5)、週日(6)
+        print(f"[INFO] 紐約時間 {now_us.strftime('%Y-%m-%d %H:%M:%S %Z')} 為週末，不運作。")
+        return
 
 def main():
     now = now_taipei()
