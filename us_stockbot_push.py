@@ -11,6 +11,18 @@ us_stockbot_push_signals.py
 - 僅使用 yfinance；台灣時間 21:30–01:00 內執行；LINE Notify 推播
 - 訊息只顯示代號與信號，不顯示任何價格與均線值
 """
+from datetime import datetime
+import pytz
+
+TZ_NY = pytz.timezone("America/New_York")
+
+# ===== 先做週末檢查 =====
+now_us = datetime.now(TZ_NY)
+if now_us.weekday() >= 5:  # 週六(5) 或 週日(6)
+    print(f"[INFO] 紐約時間 {now_us.strftime('%Y-%m-%d %H:%M:%S %Z')} 為週末，不執行。")
+    exit(0)
+# ===== 週一～週五才會繼續往下執行 =====
+
 
 import os
 import sys
@@ -288,19 +300,6 @@ def format_message(all_lines: list, run_dt=None):
     if buf:
         out.append(buf)
     return out
-
-# 週六(5)、週日(6)不運作
-from datetime import datetime
-import pytz
-
-TZ_NY = pytz.timezone("America/New_York")
-
-def main():
-    # 週末（紐約時間）不運作
-    now_us = datetime.now(TZ_NY)
-    if now_us.weekday() >= 5:  # 週六(5)、週日(6)
-        print(f"[INFO] 紐約時間 {now_us.strftime('%Y-%m-%d %H:%M:%S %Z')} 為週末，不運作。")
-        return
 
 def main():
     now = now_taipei()
