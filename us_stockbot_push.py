@@ -35,9 +35,8 @@ import yfinance as yf
 import pandas as pd
 
 # === 使用者設定 ===
-CODES = ["MSFT","NVDA","SATS","TTD","HIMS","PLTR","AVGO","MP","NB","LAC",
-         "MU","GOOG","TSM","VRT","UUUU","HOND","ALAB","AMPX","FLNC","EOSE",
-         "EME","NEE"]
+CODES = ["NVDA", "HIMS","PLTR","AVGO","MP", "ONDS", "GDX",
+         "MU","GOOG","TSM", "UUUU", "ALAB","ANET","FLNC"]
 
 TZ_TAIPEI = pytz.timezone("Asia/Taipei")
 MARKET_START = dtime(21, 30, 0)   # 台灣時間
